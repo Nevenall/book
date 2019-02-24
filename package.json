@@ -1,0 +1,19 @@
+{
+  "name": "book",
+  "version": "1.0.0",
+  "description": "a data model module for a BookShelf Book",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nevenall/book.git"
+  },
+  "author": "Dan Behlings",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nevenall/book/issues"
+  },
+  "homepage": "https://github.com/nevenall/book#readme"
+}
