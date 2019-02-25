@@ -3,6 +3,9 @@
 const fs = require('fs')
 const path = require('path')
 
+// todo - we need to be able to specify a 'root' for page paths
+// otherwise we'll have section that is 'src'
+
 /**
  * Data-model for a Book
  */
