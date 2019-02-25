@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nevenall/book.git"
+    "url": "git+https://github.com/nevenall/Book.git"
   },
   "author": "Dan Behlings",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nevenall/book/issues"
+    "url": "https://github.com/nevenall/Book/issues"
   },
-  "homepage": "https://github.com/nevenall/book#readme",
+  "homepage": "https://github.com/nevenall/Book#readme",
   "devDependencies": {
     "mocha": "^6.0.1"
   }

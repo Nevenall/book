@@ -64,7 +64,6 @@ class Book {
          insert(page, section.pages)
       }
 
-
       function insert(page, pages) {
          var index = pages.findIndex(p => page.order < p.order)
          if (index === -1) {
@@ -72,7 +71,6 @@ class Book {
          } else {
             pages.splice(index, 0, page)
          }
-        
       }
    }
 }
