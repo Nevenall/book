@@ -1,5 +1,8 @@
 'use strict'
 
+const fs = require('fs')
+const path = require('path')
+
 /**
  * Data-model for a Book
  */
@@ -11,14 +14,15 @@ class Book {
     */
    constructor(title, pages = []) {
       this.title = title
-      this.allPages = pages
+      this.allPages = []
       this.sections = []
       this.pages = []
+      //this.frontPage = new Page('Introduction', 'readme.html', 1, '<h1>Introduction</h1>')
 
       if (title === undefined || title === null || title === '') {
          throw new Error('title is required')
       }
-      // todo - frontpage is the lowest order page in the top level
+
       pages.forEach(page => {
          this.addPage(page)
       })
@@ -29,28 +33,48 @@ class Book {
     * @param {Page} page - a Page to add to the book
     */
    addPage(page) {
-      // todo - need to insert the page in the section according to the order param
-      var parts = page.path.split("/")
-      if (parts.length < 2) {
-         // no op
-      } else if (parts.length == 2) {
-         this.pages.push(page)
-      } else {
-         var sectionParts = parts.splice(1, parts.length - 2)
-         var currentSections = this.sections
-         var current = null
-         sectionParts.forEach(newSection => {
-            current = currentSections.find(s => s.name === newSection)
-            if (current == null) {
-               current = new Section(newSection)
-               currentSections.push(current)
+      // normalize page path
+      page.path = path.normalize(page.path)
+
+      this.allPages.push(page)
+
+      var data = path.parse(page.path)
+      var sectionNames = path.relative(data.root, data.dir).split(path.sep)
+
+      var section = null
+      var sections = this.sections
+
+      sectionNames.forEach(sectionName => {
+         if (sectionName === '') {
+            // insert page into root
+            insert(page, this.pages)
+         } else {
+            // find section or create it
+            section = sections.find(el => el.name === sectionName)
+            if (section == null) {
+               section = new Section(sectionName)
+               sections.push(section)
             }
-            currentSections = current.sections
-         })
-         current.pages.push(page)
+            sections = section.sections
+         }
+      })
+
+      if (section != null) {
+         // if there is a section, insert page into it
+         insert(page, section.pages)
+      }
+
+
+      function insert(page, pages) {
+         var index = pages.findIndex(p => page.order < p.order)
+         if (index === -1) {
+            pages.push(page)
+         } else {
+            pages.splice(index, 0, page)
+         }
+        
       }
    }
-
 }
 
 /**

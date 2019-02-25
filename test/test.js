@@ -1,11 +1,10 @@
 const assert = require('assert')
 const {
    Book,
-   Section,
    Page
 } = require('../index')
 
-describe('test Book functionality', function() {
+describe('test Book()', function() {
 
    it('construct empty Book', function() {
       var book = new Book('Title of a test book')
@@ -15,8 +14,13 @@ describe('test Book functionality', function() {
       assert.equal(book.pages.length, 0)
    })
 
-   it('construct without title throws error', function() {
-      var book = new Book()
+   it('Book without title throws error', function() {
+      assert.throws(() => {
+         new Book()
+      }, {
+         name: 'Error',
+         message: 'title is required'
+      })
    })
 
    it('construct Page', function() {
@@ -37,9 +41,9 @@ describe('test Book functionality', function() {
    it('construct Book orders pages correctly', function() {
       var book = new Book('Title of Book', [new Page('Page One', 'page1.html', 1), new Page('Intro', 'readme.html', 0)])
 
-      // assert.equal(book.allPages.length, 1)
-      // assert.equal(book.pages.length, 1)
-      // assert.equal(book.pages[0].name, 'Page One')
+      assert.equal(book.allPages.length, 2)
+      assert.equal(book.pages.length, 2,'pages at root' )
+      assert.equal(book.pages[0].name, 'Intro', 'Intro page is first')
    })
 
 })
