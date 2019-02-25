@@ -13,18 +13,25 @@ class Book {
    /**
     * Construct a book
     * @param {string} title - title of the book
+    * @param {string} root - the root directory of the book. Only sub-directories will be created as sections
     * @param {Page[]} pages - an array of {Page} objects to initialize the book with
     */
-   constructor(title, pages = []) {
-      this.title = title
-      this.allPages = []
-      this.sections = []
-      this.pages = []
-      //this.frontPage = new Page('Introduction', 'readme.html', 1, '<h1>Introduction</h1>')
+   constructor(title, root = '', pages = []) {
 
       if (title === undefined || title === null || title === '') {
          throw new Error('title is required')
       }
+
+      this.title = title
+      if (root.length > 0) {
+         this.root = path.normalize(root)
+      } else {
+         this.root = root
+      }
+      this.allPages = []
+      this.sections = []
+      this.pages = []
+      // todo - add a front page which we can specify, or defaults to the first readme at root level.
 
       pages.forEach(page => {
          this.addPage(page)
@@ -42,28 +49,27 @@ class Book {
       this.allPages.push(page)
 
       var data = path.parse(page.path)
-      var sectionNames = path.relative(data.root, data.dir).split(path.sep)
+      var sectionNames = data.dir.replace(this.root, '').split(path.sep)
 
-      var section = null
-      var sections = this.sections
+      if (sectionNames.length == 1 && sectionNames[0] === '') {
+         // insert page into root
+         insert(page, this.pages)
+      } else {
+         var section = null
+         var sections = this.sections
 
-      sectionNames.forEach(sectionName => {
-         if (sectionName === '') {
-            // insert page into root
-            insert(page, this.pages)
-         } else {
-            // find section or create it
-            section = sections.find(el => el.name === sectionName)
-            if (section == null) {
-               section = new Section(sectionName)
-               sections.push(section)
+         sectionNames.forEach(sectionName => {
+            if (sectionName !== '') {
+               // find section or create it
+               section = sections.find(el => el.name === sectionName)
+               if (section == null) {
+                  section = new Section(sectionName)
+                  sections.push(section)
+               }
+               sections = section.sections
             }
-            sections = section.sections
-         }
-      })
-
-      if (section != null) {
-         // if there is a section, insert page into it
+         })
+         // insert into the section we found
          insert(page, section.pages)
       }
 
