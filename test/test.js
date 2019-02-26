@@ -14,15 +14,6 @@ describe('test Book()', function() {
       assert.equal(book.pages.length, 0)
    })
 
-   it('Book without title throws error', function() {
-      assert.throws(() => {
-         new Book()
-      }, {
-         name: 'Error',
-         message: 'title is required'
-      })
-   })
-
    it('construct Page', function() {
       var page = new Page('This is a Page', 'c:/temp/page1.html', 1)
       assert.equal(page.name, 'This is a Page')
