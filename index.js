@@ -16,7 +16,7 @@ class Book {
    constructor(title, root = '', pages = []) {
 
       if (title === undefined || title === null || title === '') {
-         throw new Error('title is required')
+         // throw new Error('title is required')
       }
 
       this.title = title
