@@ -108,6 +108,7 @@ class Page {
    // todo - fix the name collision and normalize the page path here
    // todo - add the ability to fetch the contents of the page by path
    // todo - allow for providing content in the constructor
+   // todo - allow for adding custom data to pages?
 
 }
 
